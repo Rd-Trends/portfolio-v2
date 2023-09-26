@@ -19,7 +19,9 @@ export const workExperience = [
     title: "Full Stack Developer (Internship)",
     company: "Handiwoker Tech",
     date: "March 2023 - September 2023",
-    description: `Developed`,
+    description: `Developed reusable components that could be used across different projects and tested them for accessibility. Developed user interfaces for mobile and web platforms, ensuring they were user-friendly and intuitive.
+Collaborated with other developers, designers, and product managers to deliver high-quality software that met the needs of our users.
+Took a hands-on approach to coding, writing clean and functional code that could be read and understood by other developers.`,
     skills: [
       "Typescript",
       "ReactJS",

@@ -1,5 +1,6 @@
 import About from "@/components/About";
 import WorkExperience from "@/components/Experience";
+import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Project";
 import Image from "next/image";
@@ -11,9 +12,7 @@ export default function Home() {
       <About />
       <WorkExperience />
       <Projects />
-      <footer className=" w-full flex flex-col items-center space-y-4 text-center">
-        <span className=" block">&copy; Daniel Ikoyo</span>
-      </footer>
+      <Footer />
     </main>
   );
 }

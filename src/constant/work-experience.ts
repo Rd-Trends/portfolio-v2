@@ -18,8 +18,8 @@ export const workExperience = [
   {
     title: "Full Stack Developer (Internship)",
     company: "Handiwoker Tech",
-    date: "March 20223 - September 2023",
-    description: `Developing a platform for connecting handiwokers and customers`,
+    date: "March 2023 - September 2023",
+    description: `Developed`,
     skills: [
       "Typescript",
       "ReactJS",

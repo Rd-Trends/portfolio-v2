@@ -35,7 +35,6 @@ export const projects = [
       "TailwindCSS",
       "SWR",
       "Zustand",
-      "TailwindCSS",
     ],
   },
   {
@@ -52,7 +51,6 @@ export const projects = [
       "MongoDB",
       "TailwindCSS",
       "React-Query",
-      "TailwindCSS",
     ],
   },
   {
@@ -69,7 +67,6 @@ export const projects = [
       "MongoDB",
       "TailwindCSS",
       "React-Query",
-      "TailwindCSS",
     ],
   },
 ];

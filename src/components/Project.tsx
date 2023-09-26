@@ -15,10 +15,10 @@ const Projects = () => {
             key={project.title}
             className="space-y-4 bg-primary/5 p-8 rounded-sm border-2 border-transparent hover:border-primary/30">
             <div className=" flex justify-end space-x-4 pb-4">
-              <Link href={project.link} target="blank">
+              <Link href={project.link} target="blank" aria-label="Visit the site">
                 <FaExternalLinkAlt size="20" />
               </Link>
-              <Link href={project.linkToRepo} target="blank">
+              <Link href={project.linkToRepo} target="blank" aria-label="Link to repository">
                 <FaGithub size="20" />
               </Link>
             </div>

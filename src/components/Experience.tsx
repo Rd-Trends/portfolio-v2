@@ -12,7 +12,7 @@ const WorkExperience = () => {
         {workExperience.map((experience) => (
           <div
             key={experience.title}
-            className=" relative pb-8 space-x-4 after work-experience-wrapper">
+            className=" relative pb-8 last:pb-0 space-x-4 after work-experience-wrapper">
             <span className=" absolute left-0 right-0 h-12 z-10 flex items-center justify-center aspect-square rounded-full bg-primary/20 text-primary">
               <FaBriefcase size="20" />
             </span>
@@ -27,11 +27,11 @@ const WorkExperience = () => {
               <p>{experience.description}</p>
               <ul className=" flex flex-wrap">
                 {experience.skills.map((skill) => (
-                  <span
+                  <li
                     key={skill}
                     className=" bg-primary/20 text-xs mb-2  text-primary py-1.5 px-4 rounded-3xl mr-2 block">
                     {skill}
-                  </span>
+                  </li>
                 ))}
               </ul>
             </div>

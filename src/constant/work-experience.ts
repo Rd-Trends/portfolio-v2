@@ -4,7 +4,7 @@ export const workExperience = [
     company: "LifeBeyondClass",
     Link: "https://lifebeyondclass.com/",
     date: "September 2023 - Present",
-    description: `Developing a platform for connecting handiwokers and customers`,
+    description: `Worked with a team of developers to create an LMS platform`,
     skills: [
       "Typescript",
       "ReactJS",

@@ -11,8 +11,8 @@ export default function Home() {
       <About />
       <WorkExperience />
       <Projects />
-      <footer className="flex items-center space-y-4">
-        <span>&copy; Daniel Ikoyo</span>
+      <footer className=" w-full flex flex-col items-center space-y-4 text-center">
+        <span className=" block">&copy; Daniel Ikoyo</span>
       </footer>
     </main>
   );

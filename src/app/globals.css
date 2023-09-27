@@ -5,14 +5,14 @@
 :root {
   --bg-color: ##fff5e0;
   --font-color: #141e46;
-  --accent-color: #FF6969;
+  --accent-color: #ff6969;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-color: #141e46;
     --font-color: #fff5e0;
-    --accent-color: #FF6969;
+    --accent-color: #ff6969;
   }
 }
 

@@ -28,7 +28,9 @@ const Projects = () => {
                 <FaGithub size="20" />
               </Link>
             </div>
-            <Link href={project.link}>
+            <Link
+              href={project.link}
+              aria-label={`Click to visit ${project.title}`}>
               <Image
                 src={project.preview}
                 alt=""

@@ -13,6 +13,8 @@ export const metadata: Metadata = {
     locale: "en_NG",
     url: "https://dev-rd.vercel.app/",
     images: "https://dev-rd.vercel.app/og",
+    title: "Daniel Ikoyo - Full Stack Developer",
+    description: `Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.`,
   },
   twitter: {
     title: "Daniel Ikoyo",

@@ -5,14 +5,15 @@ import { Nunito } from "next/font/google";
 const nunito = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dev-rd.vercel.app"),
   title: "Daniel Ikoyo",
   description:
     "Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.",
   openGraph: {
     type: "website",
     locale: "en_NG",
-    url: "https://dev-rd.vercel.app/",
-    images: "https://dev-rd.vercel.app/og",
+    url: "/",
+    images: "/og",
     title: "Daniel Ikoyo - Full Stack Developer",
     description: `Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.`,
   },
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@Rd_Trendz",
     creator: "@Rd_Trendz",
-    images: "https://dev-rd.vercel.app/og",
+    images: "/og",
     description: `Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.`,
   },
   manifest: "/manifest.json",

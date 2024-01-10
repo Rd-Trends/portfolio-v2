@@ -2,8 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .theme-toggle-btn {
+    @apply bg-transparent;
+  }
+
+  .theme-toggle-btn[data-active="true"] {
+    @apply bg-primary bg-opacity-20;
+  }
+}
+
 :root {
-  --bg-color: #fff5e0;
+  ---color: #fff5e0;
   --font-color: #141e46;
   --accent-color: #ff6969;
 }
@@ -16,10 +26,6 @@
   }
 }
 
-body {
-  background-color: var(--bg-color);
-  color: var(--font-color);
-}
 
 .work-experience-wrapper::after {
   content: "";

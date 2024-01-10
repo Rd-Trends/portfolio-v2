@@ -7,7 +7,7 @@ import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 
 const Projects = () => {
   return (
-    <div className=" space-y-6 mb-24 md:mb-[8rem]">
+    <div className=" space-y-4 md:space-y-8 mb-24 md:mb-[8rem]">
       <SectionTitle text="My" emphasis="Portfolio" />
       <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
         {projects.map((project) => (
@@ -37,7 +37,7 @@ const Projects = () => {
                 width={500}
                 height={180}
                 quality={100}
-                className=" w-full h-auto object-center object-cover rounded-sm"
+                className=" w-full aspect-video object-center object-cover rounded-sm"
               />
             </Link>
             <div className=" space-y-3">

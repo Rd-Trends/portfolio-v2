@@ -60,8 +60,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <Suspense fallback="loading">
-      <div className=" bg-white h-full w-full min-h-screen min-w-full py-8 md:py-12">
-        <article className=" prose lg:prose-lg mx-auto max-w-4xl">
+      <div className=" h-full w-full min-h-screen min-w-full py-4">
+        <article className=" prose dark:prose-invert lg:prose-lg mx-auto max-w-full">
           <h1 className=" text-center">{post.meta.title!}</h1>
           {!!post.meta.image && (
             <Image
@@ -74,10 +74,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
               className=" object-cover object-center w-full aspect-video"
             />
           )}
-          <div className=" max-w-3xl mx-auto px-4">{post.content}</div>
-          <div className=" pt-16">
-            <Footer />
-          </div>
+          <div className=" max-w-3xl mx-auto md:px-4">{post.content}</div>
         </article>
       </div>
     </Suspense>

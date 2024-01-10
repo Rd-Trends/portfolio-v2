@@ -3,7 +3,7 @@ import SectionTitle from "./SectionTitle";
 
 const About = () => {
   return (
-    <div className=" space-y-4 mb-24 md:mb-[8rem] pt-[2rem] md:pt-[4rem]">
+    <div className=" space-y-4 md:space-y-8 mb-24 md:mb-[8rem] pt-[2rem] md:pt-[4rem]">
       <SectionTitle text="About" emphasis="Me" />
       <p className=" text-lg">
         As a full-stack developer, I have experience in developing and

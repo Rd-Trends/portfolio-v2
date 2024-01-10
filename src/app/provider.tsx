@@ -46,13 +46,10 @@ const ThemeProvider = ({
     );
   }, []);
 
-  const switchTheme = useCallback(
-    (theme: Theme) => {
-      setTheme(theme);
-      localStorage.setItem(lsThemeKey, theme);
-    },
-    [checkIfUserSystemPrefersDarkTheme]
-  );
+  const switchTheme = useCallback((theme: Theme) => {
+    setTheme(theme);
+    localStorage.setItem(lsThemeKey, theme);
+  }, []);
 
   useEffect(() => {
     const isDark = checkIfUserSystemPrefersDarkTheme();
@@ -81,3 +78,5 @@ const ThemeInitializationScript = memo(
   // ensure it only runs once
   () => true
 );
+
+ThemeInitializationScript.displayName = "ThemeInitializationScript";

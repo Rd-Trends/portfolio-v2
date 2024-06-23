@@ -10,6 +10,7 @@ type Props = {
   slug: string;
   tags?: string[];
   readingTime: string;
+  preloadImage?: boolean;
 };
 
 const BlogCard = (props: Props) => {
@@ -56,6 +57,7 @@ const BlogCard = (props: Props) => {
           width={500}
           height={350}
           className="w-full h-auto rounded-xl object-cover object-center"
+          priority={props.preloadImage}
         />
       </div>
     </Link>

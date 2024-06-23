@@ -9,9 +9,9 @@ export default function Page() {
   }));
 
   return (
-    <main>
-      {posts.map((post) => {
-        return <BlogCard key={post.title} {...post} />;
+    <main className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8 pb-8">
+      {posts.map((post, index) => {
+        return <BlogCard key={post.title} {...post} preloadImage={index < 3} />;
       })}
     </main>
   );

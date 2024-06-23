@@ -14,7 +14,7 @@ const Nav = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-end py-8 space-x-4 md:space-x-8">
+    <div className="flex items-center justify-end py-8 space-x-4 md:space-x-8   ">
       <nav>
         <ul className=" flex items-center space-x-4 md:space-x-8 list-none">
           <li>

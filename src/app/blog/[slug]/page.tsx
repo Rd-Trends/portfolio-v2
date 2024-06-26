@@ -1,6 +1,9 @@
+import { promises as fs } from "fs";
+import { getPlaiceholder } from "plaiceholder";
+import path from "path";
 import Image from "next/image";
 import type { Metadata, ResolvingMetadata } from "next";
-import { getPostBySlug } from "@/lib/api";
+import { getAllPosts, getPostBySlug } from "@/lib/api";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "@/components/MdxComponents";
 
@@ -50,12 +53,15 @@ export async function generateMetadata(
   };
 }
 
-export default function Page({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug);
 
   if (!post) {
     notFound();
   }
+
+  const buffer = await getImageBuffer(post.metadata.image);
+  const { base64 } = await getPlaiceholder(buffer);
 
   return (
     <div className=" h-full w-full min-h-screen min-w-full py-4">
@@ -70,6 +76,8 @@ export default function Page({ params }: { params: { slug: string } }) {
             priority
             quality={100}
             className=" object-cover object-center w-full aspect-video"
+            placeholder="blur"
+            blurDataURL={base64}
           />
         )}
         <div className=" max-w-3xl mx-auto md:px-4 flex items-start space-x-8 justify-between not-prose">
@@ -88,3 +96,8 @@ export default function Page({ params }: { params: { slug: string } }) {
     </div>
   );
 }
+
+const getImageBuffer = (image: string) => {
+  const imagePath = path.join(process.cwd(), "public", `${image}`);
+  return fs.readFile(imagePath);
+};

@@ -1,6 +1,12 @@
 import BlogCard from "@/components/BlogCard";
 import { getAllPosts } from "@/lib/api";
+import { Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "A collection of blog posts on web developments",
+};
 
 export default function Page() {
   const posts = getAllPosts().map((post) => ({

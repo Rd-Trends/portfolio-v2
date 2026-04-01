@@ -54,8 +54,9 @@ const BlogCard = (props: Props) => {
         <Image
           src={props.image}
           alt={props.title}
-          width={500}
-          height={350}
+          width={640}
+          height={360}
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
           className="w-full h-auto rounded-xl object-cover object-center"
           priority={props.preloadImage}
         />

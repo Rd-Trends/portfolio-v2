@@ -1,0 +1,35 @@
+export const workExperience = [
+  {
+    title: "Full Stack Developer",
+    company: "LifeBeyondClass",
+    Link: "https://lifebeyondclass.com/",
+    date: "September 2023 - Present",
+    description: `As a vital team member, contributed to the collaborative development of a comprehensive Learning Management System (LMS) platform. Utilized expertise in Typescript, ReactJS, NextJS, NodeJS, AdonisJS, PostgreSQL, and AWS to architect and implement key functionalities. Worked closely with cross-functional developers to seamlessly integrate dynamic user interfaces, optimize system performance, and manage the database infrastructure. This collective effort led to the successful delivery of a high-quality LMS platform that caters to the diverse needs of our users.`,
+    skills: [
+      "Typescript",
+      "ReactJS",
+      "NextJS",
+      "NodeJS",
+      "AdonisJS",
+      "PostgreSQL",
+      "AWS",
+    ],
+  },
+  {
+    title: "Full Stack Developer (Internship)",
+    company: "Handiwoker Tech",
+    date: "March 2023 - September 2023",
+    description: `Developed reusable components for versatile application across projects, ensuring adherence to accessibility standards. Created user interfaces for mobile and web platforms with a focus on user-friendly and intuitive design. Collaborated seamlessly with developers, designers, and product managers to deliver high-quality software that precisely met user needs. Maintained a hands-on coding approach, producing clean and functional code for streamlined collaboration.`,
+    skills: [
+      "Typescript",
+      "ReactJS",
+      "NextJS",
+      "NodeJS",
+      "AdonisJS",
+      "MongoDB",
+      "AWS",
+      "Styled-components",
+      "Storybook",
+    ],
+  },
+];

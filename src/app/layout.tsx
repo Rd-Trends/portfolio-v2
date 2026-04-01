@@ -1,25 +1,33 @@
-import "./globals.css";
+import "./global.css";
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
-import ThemeProvider from "./provider";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import ThemeProvider from "@/app/provider";
+import { Navbar } from "@/components/nav";
+import Footer from "@/components/footer";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { baseUrl } from "@/app/sitemap";
 import { minify } from "terser";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dev-rd.vercel.app"),
-  title: "Daniel Ikoyo",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "Daniel Ikoyo",
+    template: "%s | Daniel Ikoyo",
+  },
   description:
-    "Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.",
+    "Daniel Ikoyo is a Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.",
   openGraph: {
     type: "website",
     locale: "en_NG",
     url: "/",
     images: "/og",
     title: "Daniel Ikoyo - Full Stack Developer",
-    description: `Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.`,
+    description:
+      "Daniel Ikoyo is a Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.",
+    siteName: "Daniel Ikoyo",
   },
   twitter: {
     title: "Daniel Ikoyo",
@@ -27,7 +35,19 @@ export const metadata: Metadata = {
     site: "@Rd_Trendz",
     creator: "@Rd_Trendz",
     images: "/og",
-    description: `Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.`,
+    description:
+      "Daniel Ikoyo is a Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   manifest: "/manifest.json",
   icons: {
@@ -44,23 +64,26 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const script = await minify(code);
+  const script = await minify(themeScript);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={nunito.className}>
         <ThemeProvider code={script.code!}>
           <div className="flex min-h-screen flex-col justify-between py-4 px-4 md:px-12 lg:px-[8rem] max-w-7xl mx-auto">
-            <Nav />
+            <Navbar />
             {children}
             <Footer />
           </div>
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
 }
 
-const code = `!(function () {
+const themeScript = `!(function () {
   var currentTheme = "system";
   var userSystemPrefersDarkMode = false;
   if (localStorage.getItem("theme")) {
@@ -81,5 +104,4 @@ const code = `!(function () {
     document.documentElement.classList.remove("dark");
   }
   localStorage.setItem("theme", currentTheme);
-})()
-`;
+})()`;

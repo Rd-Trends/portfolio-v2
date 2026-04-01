@@ -13,7 +13,7 @@ type Theme = "dark" | "light" | "system";
 
 const ThemeContext = createContext({
   theme: "system" as Theme,
-  switchTheme: (theme: Theme) => {},
+  switchTheme: (_theme: Theme) => {},
 });
 
 export const useTheme = () => {
@@ -23,11 +23,11 @@ export const useTheme = () => {
 const lsThemeKey = "theme";
 
 const initialThemeState = () => {
-  let theme;
+  let theme: Theme = "system";
   if (typeof window !== "undefined" && window.localStorage) {
-    theme = localStorage.getItem(lsThemeKey) ?? "system";
+    theme = (localStorage.getItem(lsThemeKey) as Theme) ?? "system";
   }
-  return theme as Theme;
+  return theme;
 };
 
 const ThemeProvider = ({
@@ -59,10 +59,11 @@ const ThemeProvider = ({
       document.documentElement.classList.remove("dark");
     }
   }, [theme, checkIfUserSystemPrefersDarkTheme]);
+
   return (
     <ThemeContext.Provider value={{ theme, switchTheme }}>
       <ThemeInitializationScript code={code} />
-      <div className=" bg-main-bg dark:bg-main-bg-dark text-font-color dark:text-font-color-dark transition-colors duration-150">
+      <div className="bg-main-bg dark:bg-main-bg-dark text-font-color dark:text-font-color-dark transition-colors duration-150">
         {children}
       </div>
     </ThemeContext.Provider>
@@ -75,7 +76,6 @@ const ThemeInitializationScript = memo(
   ({ code }: { code: string }) => {
     return <script dangerouslySetInnerHTML={{ __html: code }} />;
   },
-  // ensure it only runs once
   () => true
 );
 

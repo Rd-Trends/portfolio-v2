@@ -1,11 +1,9 @@
-import About from "@/components/About";
-import WorkExperience from "@/components/Experience";
-import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
-import Nav from "@/components/Nav";
-import Projects from "@/components/Project";
+import Hero from "@/components/hero";
+import About from "@/components/about";
+import WorkExperience from "@/components/experience";
+import Projects from "@/components/project";
 
-export default async function Home() {
+export default function Page() {
   return (
     <main>
       <Hero />

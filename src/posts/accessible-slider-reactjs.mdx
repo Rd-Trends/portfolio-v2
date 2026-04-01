@@ -1,0 +1,260 @@
+---
+title: "A Guide to Crafting a Reusable and Accessible Slider Component in React.js"
+publishedAt: "2024-01-08"
+summary: "Learn how to create an accessible slider in web development using a custom hook. Dive into the implementation details, from handling pointer and keyboard events to incorporating accessibility attributes. Enhance user experience with a slider that caters to diverse abilities, ensuring inclusivity in your web applications."
+description: "Learn how to create an accessible slider in web development using a custom hook. Dive into the implementation details, from handling pointer and keyboard events to incorporating accessibility attributes. Enhance user experience with a slider that caters to diverse abilities, ensuring inclusivity in your web applications."
+image: "/images/blog/accessible_slider_react.png"
+tags: ["react", "web-development", "accessibility", "slider", "custom-hook"]
+---
+
+## Introduction
+
+In the ever-evolving landscape of web development, creating components that are not only visually
+appealing but also accessible to a diverse audience is very important.
+Sliders are ubiquitous UI elements, they can be found in most things from music players, video player to image editors.
+But crafting accessible and truly reusable sliders can be a bit tricky.
+
+In this article, we'll delve into the process of crafting a reusable and accessible slider component using React.js. We will guide you through the creation of a custom hook that handles state management, user interactions, and most importantly, accessibility considerations. By the end of this journey, you'll have gained insights into building components that not only meet the aesthetic demands of today's web but also prioritize inclusivity, making your applications enjoyable for all users. Let's embark on this
+journey to create a slider component that truly stands out for its functionality and accessibility.
+
+## Understanding the requirements
+
+According to [W3C](https://www.w3.org/WAI/ARIA/apg/patterns/slider/), a slider is an input widget that provides a graphical mechanism for selecting a value from a range between a minimum and maximum value. In terms of accessibility, the slider should:
+
+- Be focusable via keyboard
+- Support arrow key navigation (ArrowRight, ArrowLeft, ArrowUp, ArrowDown)
+- Support Home and End keys to jump to min/max
+- Have proper ARIA attributes: `role="slider"`, `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, and `aria-valuetext`
+
+## Building the custom hook
+
+Let's start by building the `useSlider` hook that encapsulates all the logic:
+
+```tsx
+import { useState, useCallback, useRef } from "react";
+
+type UseSliderOptions = {
+  min?: number;
+  max?: number;
+  step?: number;
+  defaultValue?: number;
+  onChange?: (value: number) => void;
+};
+
+export function useSlider({
+  min = 0,
+  max = 100,
+  step = 1,
+  defaultValue = 0,
+  onChange,
+}: UseSliderOptions = {}) {
+  const [value, setValue] = useState(defaultValue);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const clamp = (val: number) =>
+    Math.min(max, Math.max(min, Math.round(val / step) * step));
+
+  const updateValue = useCallback(
+    (newValue: number) => {
+      const clamped = clamp(newValue);
+      setValue(clamped);
+      onChange?.(clamped);
+    },
+    [min, max, step, onChange]
+  );
+
+  const getValueFromPointer = useCallback(
+    (clientX: number) => {
+      if (!trackRef.current) return value;
+      const { left, width } = trackRef.current.getBoundingClientRect();
+      const ratio = (clientX - left) / width;
+      return min + ratio * (max - min);
+    },
+    [min, max, value]
+  );
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      e.currentTarget.setPointerCapture(e.pointerId);
+      updateValue(getValueFromPointer(e.clientX));
+    },
+    [updateValue, getValueFromPointer]
+  );
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent) => {
+      if (e.buttons === 0) return;
+      updateValue(getValueFromPointer(e.clientX));
+    },
+    [updateValue, getValueFromPointer]
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      switch (e.key) {
+        case "ArrowRight":
+        case "ArrowUp":
+          e.preventDefault();
+          updateValue(value + step);
+          break;
+        case "ArrowLeft":
+        case "ArrowDown":
+          e.preventDefault();
+          updateValue(value - step);
+          break;
+        case "Home":
+          e.preventDefault();
+          updateValue(min);
+          break;
+        case "End":
+          e.preventDefault();
+          updateValue(max);
+          break;
+      }
+    },
+    [value, step, min, max, updateValue]
+  );
+
+  const percentage = ((value - min) / (max - min)) * 100;
+
+  return {
+    value,
+    percentage,
+    trackRef,
+    thumbProps: {
+      role: "slider" as const,
+      tabIndex: 0,
+      "aria-valuenow": value,
+      "aria-valuemin": min,
+      "aria-valuemax": max,
+      "aria-valuetext": `${value}`,
+      onKeyDown: handleKeyDown,
+    },
+    trackProps: {
+      ref: trackRef,
+      onPointerDown: handlePointerDown,
+      onPointerMove: handlePointerMove,
+    },
+  };
+}
+```
+
+## Building the Slider component
+
+With the hook in place, building the visual component becomes straightforward:
+
+```tsx
+import { useSlider } from "./useSlider";
+
+type SliderProps = {
+  min?: number;
+  max?: number;
+  step?: number;
+  defaultValue?: number;
+  label: string;
+  onChange?: (value: number) => void;
+};
+
+export function Slider({ label, ...options }: SliderProps) {
+  const { value, percentage, thumbProps, trackProps } = useSlider(options);
+
+  return (
+    <div className="slider-container">
+      <label id="slider-label">{label}</label>
+      <div
+        className="slider-track"
+        aria-labelledby="slider-label"
+        {...trackProps}
+      >
+        <div
+          className="slider-fill"
+          style={{ width: `${percentage}%` }}
+        />
+        <div
+          className="slider-thumb"
+          style={{ left: `${percentage}%` }}
+          {...thumbProps}
+        />
+      </div>
+      <span className="slider-value">{value}</span>
+    </div>
+  );
+}
+```
+
+## Styling the slider
+
+Here's some CSS to make the slider look polished:
+
+```css
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.slider-track {
+  position: relative;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+.slider-fill {
+  position: absolute;
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.slider-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 2px solid #3b82f6;
+  border-radius: 50%;
+  cursor: grab;
+  outline: none;
+}
+
+.slider-thumb:focus-visible {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+```
+
+## Putting it all together
+
+Here's how you'd use the component in a real page:
+
+```tsx
+export default function Page() {
+  return (
+    <div style={{ padding: "2rem", maxWidth: 400 }}>
+      <Slider
+        label="Volume"
+        min={0}
+        max={100}
+        step={5}
+        defaultValue={40}
+        onChange={(val) => console.log("Volume:", val)}
+      />
+    </div>
+  );
+}
+```
+
+## Key takeaways
+
+1. **Separate concerns** — the `useSlider` hook owns all logic; the component only handles rendering.
+2. **Pointer events over mouse events** — pointer events work for mouse, touch, and stylus simultaneously.
+3. **Pointer capture** — calling `setPointerCapture` on `pointerdown` ensures the thumb keeps tracking even if the cursor leaves it.
+4. **Keyboard support** — Arrow keys, Home, and End are the W3C-mandated keys for a slider widget.
+5. **ARIA attributes** — `role="slider"`, `aria-valuenow`, `aria-valuemin`, and `aria-valuemax` are non-negotiable for screen reader support.
+
+By following these patterns you get a slider that works correctly for keyboard-only users, screen reader users, mouse users, and touch users — all from a single reusable hook.

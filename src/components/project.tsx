@@ -1,4 +1,5 @@
 import SectionTitle from "@/components/section-title";
+import AnimateOnScroll from "@/components/animate-on-scroll";
 import { projects } from "@/constants/projects";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,61 +7,76 @@ import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 
 const Projects = () => {
   return (
-    <div className="space-y-4 md:space-y-8 mb-24 md:mb-[8rem]">
-      <SectionTitle text="My" emphasis="Portfolio" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-        {projects.map((project) => (
-          <div
-            key={project.title}
-            className="space-y-4 bg-primary/5 dark:bg-primary/10 p-8 block no-underline rounded-sm border-2 border-transparent hover:border-primary/30"
-          >
-            <div className="flex justify-end space-x-4 pb-6 font-light">
-              <Link
-                href={project.link}
-                target="_blank"
-                aria-label="Visit the site"
-              >
-                <FaExternalLinkAlt size="20" />
-              </Link>
-              <Link
-                href={project.linkToRepo}
-                target="_blank"
-                aria-label="Link to repository"
-              >
-                <FaGithub size="20" />
-              </Link>
-            </div>
-            <Link
-              href={project.link}
-              aria-label={`Click to visit ${project.title}`}
-            >
-              <Image
-                src={project.preview}
-                alt=""
-                width={500}
-                height={180}
-                quality={100}
-                className="w-full aspect-video object-center object-cover rounded-sm"
-              />
-            </Link>
-            <div className="space-y-3">
-              <h3 className="text-lg font-semibold">{project.title}</h3>
-              <p>{project.description}</p>
-              <ul className="flex flex-wrap">
-                {project.tools.map((tool, index) => (
-                  <li
-                    key={tool + index}
-                    className="mr-2 mb-2 bg-primary/20 text-primary py-1.5 px-4 text-xs rounded-sm"
-                  >
-                    {tool}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        ))}
+    <section className="py-16 md:py-24">
+      <div className="space-y-8 md:space-y-12">
+        <SectionTitle text="Projects" emphasis="Other Work" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project, index) => (
+            <AnimateOnScroll key={project.title} delay={index * 100}>
+              <div className="group relative flex flex-col h-full rounded-xl border border-border bg-card overflow-hidden hover:border-primary transition-all duration-300 hover:shadow-xl">
+                {/* Image */}
+                <Link
+                  href={project.link}
+                  aria-label={`Visit ${project.title}`}
+                  className="block overflow-hidden"
+                >
+                  <Image
+                    src={project.preview}
+                    alt={project.title}
+                    width={600}
+                    height={340}
+                    quality={90}
+                    className="w-full aspect-video object-cover object-center group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+                  />
+                </Link>
+
+                {/* Content */}
+                <div className="flex flex-col flex-1 p-6 space-y-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-display text-lg font-bold">
+                      {project.title}
+                    </h3>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <Link
+                        href={project.link}
+                        target="_blank"
+                        aria-label="Visit the site"
+                        className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                      >
+                        <FaExternalLinkAlt size={14} />
+                      </Link>
+                      <Link
+                        href={project.linkToRepo}
+                        target="_blank"
+                        aria-label="View source code"
+                        className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                      >
+                        <FaGithub size={16} />
+                      </Link>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                    {project.description}
+                  </p>
+
+                  <ul className="flex flex-wrap gap-2 pt-1">
+                    {project.tools.map((tool, i) => (
+                      <li
+                        key={tool + i}
+                        className="text-xs px-3 py-1 rounded-full border border-border text-muted-foreground"
+                      >
+                        {tool}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </AnimateOnScroll>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,4 +1,4 @@
-import { getBlogPosts, formatDate } from "@/utils";
+import { getBlogPosts, formatDate } from "@/lib/utils";
 import BlogCard from "@/components/blog-card";
 
 export function BlogPosts() {

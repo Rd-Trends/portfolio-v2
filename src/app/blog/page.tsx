@@ -1,5 +1,5 @@
 import BlogCard from "@/components/blog-card";
-import { getBlogPosts, formatDate } from "@/utils";
+import { getBlogPosts, formatDate } from "@/lib/utils";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

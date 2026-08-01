@@ -13,17 +13,17 @@ type Metadata = {
 };
 
 function parseFrontmatter(fileContent: string) {
-  let frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
-  let match = frontmatterRegex.exec(fileContent);
-  let frontMatterBlock = match![1];
-  let content = fileContent.replace(frontmatterRegex, "").trim();
-  let frontMatterLines = frontMatterBlock.trim().split("\n");
-  let metadata: Partial<Metadata> = {};
+  const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
+  const match = frontmatterRegex.exec(fileContent);
+  const frontMatterBlock = match![1];
+  const content = fileContent.replace(frontmatterRegex, "").trim();
+  const frontMatterLines = frontMatterBlock.trim().split("\n");
+  const metadata: Partial<Metadata> = {};
 
   frontMatterLines.forEach((line) => {
-    let colonIndex = line.indexOf(": ");
+    const colonIndex = line.indexOf(": ");
     if (colonIndex === -1) return;
-    let key = line.slice(0, colonIndex).trim();
+    const key = line.slice(0, colonIndex).trim();
     let value = line.slice(colonIndex + 2).trim();
     value = value.replace(/^['"](.*)['"]$/, "$1"); // Remove surrounding quotes
 
@@ -54,15 +54,15 @@ function getMDXFiles(dir: string) {
 }
 
 function readMDXFile(filePath: string) {
-  let rawContent = fs.readFileSync(filePath, "utf-8");
+  const rawContent = fs.readFileSync(filePath, "utf-8");
   return parseFrontmatter(rawContent);
 }
 
 function getMDXData(dir: string) {
-  let mdxFiles = getMDXFiles(dir);
+  const mdxFiles = getMDXFiles(dir);
   return mdxFiles.map((file) => {
-    let { metadata, content } = readMDXFile(path.join(dir, file));
-    let slug = path.basename(file, path.extname(file));
+    const { metadata, content } = readMDXFile(path.join(dir, file));
+    const slug = path.basename(file, path.extname(file));
 
     return {
       metadata,
@@ -77,16 +77,16 @@ export function getBlogPosts() {
 }
 
 export function formatDate(date: string, includeRelative = true) {
-  let currentDate = new Date();
+  const currentDate = new Date();
   if (!date.includes("T")) {
     date = `${date}T00:00:00`;
   }
-  let targetDate = new Date(date);
+  const targetDate = new Date(date);
 
-  let timeDifference = Math.abs(currentDate.getTime() - targetDate.getTime());
-  let daysAgo = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  const timeDifference = Math.abs(currentDate.getTime() - targetDate.getTime());
+  const daysAgo = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-  let fullDate = targetDate.toLocaleString("en-NG", {
+  const fullDate = targetDate.toLocaleString("en-NG", {
     month: "long",
     day: "numeric",
     year: "numeric",

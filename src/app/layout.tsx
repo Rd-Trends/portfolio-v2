@@ -1,15 +1,22 @@
-import "./global.css";
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
-import ThemeProvider from "@/app/provider";
+import { Syne, DM_Sans } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/nav";
 import Footer from "@/components/footer";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { baseUrl } from "@/app/sitemap";
-import { minify } from "terser";
+import "./globals.css";
 
-const nunito = Nunito({ subsets: ["latin"] });
+const syne = Syne({
+  subsets: ["latin"],
+  variable: "--font-syne",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -18,15 +25,15 @@ export const metadata: Metadata = {
     template: "%s | Daniel Ikoyo",
   },
   description:
-    "Daniel Ikoyo is a Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.",
+    "Daniel Ikoyo is a Full Stack Developer who builds high-quality, scalable web applications with modern technologies.",
   openGraph: {
     type: "website",
     locale: "en_NG",
     url: "/",
     images: "/og",
-    title: "Daniel Ikoyo - Full Stack Developer",
+    title: "Daniel Ikoyo — Full Stack Developer",
     description:
-      "Daniel Ikoyo is a Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.",
+      "Daniel Ikoyo is a Full Stack Developer who builds high-quality, scalable web applications with modern technologies.",
     siteName: "Daniel Ikoyo",
   },
   twitter: {
@@ -36,7 +43,7 @@ export const metadata: Metadata = {
     creator: "@Rd_Trendz",
     images: "/og",
     description:
-      "Daniel Ikoyo is a Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.",
+      "Daniel Ikoyo is a Full Stack Developer who builds high-quality, scalable web applications with modern technologies.",
   },
   robots: {
     index: true,
@@ -59,49 +66,33 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const script = await minify(themeScript);
-
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={nunito.className}>
-        <ThemeProvider code={script.code!}>
-          <div className="flex min-h-screen flex-col justify-between py-4 px-4 md:px-12 lg:px-[8rem] max-w-7xl mx-auto">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${syne.variable} ${dmSans.variable}`}
+    >
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="noise" aria-hidden="true" />
+          <div className="relative flex min-h-screen flex-col justify-between max-w-6xl mx-auto px-5 md:px-10 lg:px-16">
             <Navbar />
             {children}
             <Footer />
           </div>
         </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
+
       </body>
     </html>
   );
 }
-
-const themeScript = `!(function () {
-  var currentTheme = "system";
-  var userSystemPrefersDarkMode = false;
-  if (localStorage.getItem("theme")) {
-    currentTheme = localStorage.getItem("theme");
-  }
-  if (
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  ) {
-    userSystemPrefersDarkMode = true;
-  }
-  if (
-    currentTheme === "dark" ||
-    (currentTheme === "system" && userSystemPrefersDarkMode)
-  ) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
-  localStorage.setItem("theme", currentTheme);
-})()`;

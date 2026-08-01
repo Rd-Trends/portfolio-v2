@@ -1,14 +1,15 @@
 export const workExperience = [
   {
-    title: "Full Stack Developer",
+    title: "Frontend Developer",
     company: "LifeBeyondClass",
     Link: "https://lifebeyondclass.com/",
     date: "September 2023 - Present",
-    description: `As a vital team member, contributed to the collaborative development of a comprehensive Learning Management System (LMS) platform. Utilized expertise in Typescript, ReactJS, NextJS, NodeJS, AdonisJS, PostgreSQL, and AWS to architect and implement key functionalities. Worked closely with cross-functional developers to seamlessly integrate dynamic user interfaces, optimize system performance, and manage the database infrastructure. This collective effort led to the successful delivery of a high-quality LMS platform that caters to the diverse needs of our users.`,
+    description: `Led frontend development for a comprehensive Learning Management System (LMS) platform, building dynamic and responsive interfaces with React, Next.js, and TypeScript. Architected reusable component systems, implemented complex UI flows for course management and student dashboards, and optimized client-side performance. Also contributed to backend development with Node.js, AdonisJS, and PostgreSQL, and helped manage AWS infrastructure — delivering a polished, full-featured platform serving diverse users.`,
     skills: [
       "Typescript",
       "ReactJS",
       "NextJS",
+      "TailwindCSS",
       "NodeJS",
       "AdonisJS",
       "PostgreSQL",
@@ -16,20 +17,20 @@ export const workExperience = [
     ],
   },
   {
-    title: "Full Stack Developer (Internship)",
+    title: "Frontend Developer (Internship)",
     company: "Handiwoker Tech",
     date: "March 2023 - September 2023",
-    description: `Developed reusable components for versatile application across projects, ensuring adherence to accessibility standards. Created user interfaces for mobile and web platforms with a focus on user-friendly and intuitive design. Collaborated seamlessly with developers, designers, and product managers to deliver high-quality software that precisely met user needs. Maintained a hands-on coding approach, producing clean and functional code for streamlined collaboration.`,
+    description: `Built reusable, accessible component libraries used across multiple projects, establishing consistent design patterns with Storybook and styled-components. Created responsive user interfaces for mobile and web platforms with a strong focus on usability and visual fidelity. Collaborated closely with designers and product managers to translate mockups into production-ready code, and contributed to backend services with Node.js and AdonisJS.`,
     skills: [
       "Typescript",
       "ReactJS",
       "NextJS",
+      "Styled-components",
+      "Storybook",
       "NodeJS",
       "AdonisJS",
       "MongoDB",
       "AWS",
-      "Styled-components",
-      "Storybook",
     ],
   },
 ];

@@ -51,20 +51,4 @@ export const projects = [
       "React-Query",
     ],
   },
-  {
-    preview: "/images/img-gallery.png",
-    title: "Image Gallery",
-    link: "https://rd-hngx-drag-and-drop-image-gallery.vercel.app/",
-    linkToRepo: "https://github.com/Rd-Trends/HNGX-drag-and-drop-image-gallery",
-    description:
-      "A simple image gallery that supports searching for images and repositioning images by dragging and dropping.",
-    tools: [
-      "ReactJS",
-      "NextJS",
-      "Typescript",
-      "MongoDB",
-      "TailwindCSS",
-      "React-Query",
-    ],
-  },
 ];

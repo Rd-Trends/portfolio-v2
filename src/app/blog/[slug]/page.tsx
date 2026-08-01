@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import { getPlaiceholder } from "plaiceholder";
 import { CustomMDX } from "@/components/mdx";
-import { getBlogPosts, formatDate } from "@/utils";
+import { getBlogPosts, formatDate } from "@/lib/utils";
 import { baseUrl } from "@/app/sitemap";
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  let posts = getBlogPosts();
+  const posts = getBlogPosts();
   return posts.map((post) => ({ slug: post.slug }));
 }
 

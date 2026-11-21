@@ -1,103 +1,102 @@
-import { promises as fs } from "fs";
-import { getPlaiceholder } from "plaiceholder";
-import path from "path";
+import type { Metadata } from "next";
 import Image from "next/image";
-import type { Metadata, ResolvingMetadata } from "next";
-import { getAllPosts, getPostBySlug } from "@/lib/api";
 import { notFound } from "next/navigation";
-import { CustomMDX } from "@/components/MdxComponents";
+import BackLink from "@/components/BackLink";
+import Mdx from "@/components/Mdx";
+import PageHeader from "@/components/PageHeader";
+import { formatDate, getAllPosts, getPostBySlug } from "@/lib/content";
+import { baseOpenGraph, site } from "@/lib/site";
 
-type Props = {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+type Props = { params: Promise<{ slug: string }> };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata | undefined> {
-  // fetch data
-  const post = getPostBySlug(params.slug);
+export const dynamicParams = false;
 
-  if (!post) {
-    return;
-  }
-  const meta = post.metadata;
+export function generateStaticParams() {
+  return getAllPosts().map((post) => ({ slug: post.slug }));
+}
 
-  const { title, description, image, publishedAt: publishedTime } = meta;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) return {};
 
-  // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
-
+  const { title, description, image, publishedAt } = post;
+  const url = `/blog/${slug}`;
   return {
     title,
     description,
+    alternates: { canonical: url },
     openGraph: {
+      ...baseOpenGraph,
+      type: "article",
       title,
       description,
-      type: "article",
-      publishedTime,
-      url: `https://dev-rd.vercel.app/blog/${title}`,
-      images: [
-        {
-          url: `https://dev-rd.vercel.app${image}`,
-        },
-      ],
+      url,
+      publishedTime: publishedAt,
+      authors: [site.name],
+      ...(image ? { images: [{ url: image }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [`https://dev-rd.vercel.app${image}`],
+      ...(image ? { images: [image] } : {}),
     },
   };
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
+export default async function Page({ params }: Props) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) notFound();
 
-  if (!post) {
-    notFound();
-  }
-
-  const buffer = await getImageBuffer(post.metadata.image);
-  const { base64 } = await getPlaiceholder(buffer);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.publishedAt,
+    url: `${site.url}/blog/${post.slug}`,
+    ...(post.image ? { image: `${site.url}${post.image}` } : {}),
+    author: { "@type": "Person", name: site.name, url: site.url },
+  };
 
   return (
-    <div className=" h-full w-full min-h-screen min-w-full py-4">
-      <article className=" prose dark:prose-invert lg:prose-lg mx-auto max-w-full">
-        <h1 className=" text-center">{post.metadata.title!}</h1>
-        {!!post.metadata.image && (
-          <Image
-            src={post.metadata.image}
-            alt={`${post.metadata.title} cover photo`}
-            width={500}
-            height={200}
-            priority
-            quality={100}
-            className=" object-cover object-center w-full aspect-video"
-            placeholder="blur"
-            blurDataURL={base64}
-          />
-        )}
-        <div className=" max-w-3xl mx-auto md:px-4 flex items-start space-x-8 justify-between not-prose">
-          <p className=" text-lg md:text-sm">
-            <time dateTime={post.metadata.publishedAt}>
-              {post.metadata.publishedAt}
-            </time>
-          </p>
-
-          <p className=" text-lg md:text-sm">{post.metadata.readingTime}</p>
-        </div>
-        <div className=" max-w-3xl mx-auto md:px-4 -mt-6">
-          <CustomMDX source={post.content} />
-        </div>
-      </article>
-    </div>
+    <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <div className="pt-2">
+        <BackLink href="/blog">All writing</BackLink>
+      </div>
+      <PageHeader
+        eyebrow={
+          <>
+            <time dateTime={post.publishedAt}>
+              {formatDate(post.publishedAt)}
+            </time>{" "}
+            &middot; {post.readingTime}
+          </>
+        }
+        title={post.title}
+      />
+      {post.image && (
+        <Image
+          src={post.image}
+          alt=""
+          width={1344}
+          height={705}
+          priority
+          sizes="(min-width: 672px) 624px, 100vw"
+          className="mt-10 aspect-video w-full rounded-lg border border-line object-cover"
+        />
+      )}
+      <div className="mt-10">
+        <Mdx source={post.content} />
+      </div>
+    </article>
   );
 }
-
-const getImageBuffer = (image: string) => {
-  const imagePath = path.join(process.cwd(), "public", `${image}`);
-  return fs.readFile(imagePath);
-};

@@ -1,37 +1,190 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-@layer components {
-  .theme-toggle-btn {
-    @apply bg-transparent;
-  }
-
-  .theme-toggle-btn[data-active="true"] {
-    @apply bg-primary bg-opacity-20;
-  }
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  ---color: #fff5e0;
-  --font-color: #141e46;
-  --accent-color: #ff6969;
+  color-scheme: light;
+  --bg: #fafaf9;
+  --fg: #1c1917;
+  --muted: #68625c;
+  --line: #e7e5e4;
+  --subtle: #f2f1ef;
+  --accent: #cf3237;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-color: #141e46;
-    --font-color: #fff5e0;
-    --accent-color: #ff6969;
+.dark {
+  color-scheme: dark;
+  --bg: #0f0f10;
+  --fg: #ededec;
+  --muted: #a3a29c;
+  --line: #27272a;
+  --subtle: #18181b;
+  --accent: #ff6969;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 }
 
+/* Long-form content (case studies and blog posts) */
+.prose {
+  --tw-prose-body: var(--fg);
+  --tw-prose-headings: var(--fg);
+  --tw-prose-lead: var(--muted);
+  --tw-prose-links: var(--fg);
+  --tw-prose-bold: var(--fg);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quotes: var(--fg);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--muted);
+  --tw-prose-code: var(--fg);
+  --tw-prose-pre-code: var(--fg);
+  --tw-prose-pre-bg: var(--subtle);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+  max-width: none;
+}
 
-.work-experience-wrapper::after {
-  content: "";
-  position: absolute;
-  left: 1.5rem;
-  border: 1px solid var(--accent-color);
-  top: 3rem;
-  bottom: 0;
+.prose a {
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.prose :where(h2, h3) {
+  scroll-margin-top: 2rem;
+  letter-spacing: -0.01em;
+}
+
+.prose :not(pre) > code {
+  font-weight: 500;
+  background-color: var(--subtle);
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  padding: 0.1em 0.35em;
+  font-size: 0.85em;
+}
+
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: none;
+}
+
+.prose pre {
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 1rem 0;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+
+.prose pre > code {
+  display: grid;
+  min-width: 100%;
+}
+
+.prose pre [data-line] {
+  padding: 0 1rem;
+}
+
+/* rehype-pretty-code dual themes */
+.prose code[data-theme] span {
+  color: var(--shiki-light);
+}
+
+.dark .prose code[data-theme] span {
+  color: var(--shiki-dark);
+}
+
+.prose img {
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+
+/* Printing the home page gives a CV: light colours, no site chrome. */
+@media print {
+  :root,
+  .dark {
+    color-scheme: light;
+    --bg: #ffffff;
+    --fg: #111111;
+    --muted: #444444;
+    --line: #dddddd;
+    --subtle: #f5f5f5;
+    --accent: #111111;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+
+  html {
+    font-size: 13px;
+  }
+
+  body > div {
+    display: block;
+    max-width: none;
+    min-height: 0;
+    padding: 0;
+  }
+
+  body > a,
+  body > div > header,
+  body > div > footer {
+    display: none;
+  }
+
+  section {
+    margin-top: 2rem;
+  }
+
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  p {
+    orphans: 3;
+    widows: 3;
+  }
 }

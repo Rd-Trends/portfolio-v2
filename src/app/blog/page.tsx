@@ -1,17 +1,26 @@
-import BlogCard from "@/components/BlogCard";
-import { getAllPosts } from "@/lib/api";
-import React from "react";
+import type { Metadata } from "next";
+import PageHeader from "@/components/PageHeader";
+import PostList from "@/components/PostList";
+import { getAllPosts } from "@/lib/content";
+import { baseOpenGraph } from "@/lib/site";
+
+const description =
+  "Notes on building for the web: React, accessibility and frontend engineering.";
+
+export const metadata: Metadata = {
+  title: "Writing",
+  description,
+  alternates: { canonical: "/blog" },
+  openGraph: { ...baseOpenGraph, title: "Writing", description, url: "/blog" },
+};
 
 export default function Page() {
-  const posts = getAllPosts().map((post) => ({
-    ...post.metadata,
-  }));
-
   return (
-    <main className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8 pb-8">
-      {posts.map((post, index) => {
-        return <BlogCard key={post.title} {...post} preloadImage={index < 3} />;
-      })}
-    </main>
+    <>
+      <PageHeader title="Writing" description={description} />
+      <div className="mt-10">
+        <PostList posts={getAllPosts()} />
+      </div>
+    </>
   );
 }

@@ -1,0 +1,67 @@
+---
+title: Building Giddaa's design system
+description: One component library, published to npm and used by the buyer site and the admin app, and the phased migration that moved the buyer site onto it.
+slug: giddaa-design-system
+company: Giddaa
+role: Lead Frontend Developer
+timeframe: Jun – Oct 2026
+stack: ["React 19", "TypeScript", "Tailwind CSS 4", "Base UI", "CVA", "tsdown", "Changesets"]
+order: 2
+---
+
+[Giddaa](https://giddaa.com) helps Nigerians buy homes through mortgages and payment plans. There are three frontends: the public buyer site, an internal admin app, and a mobile app for agents. I lead the frontend team, and I designed and built the component library the web apps now share.
+
+![The documentation site for the Giddaa UI system](/images/work/giddaa-ui-docs.webp)
+
+## Where we started
+
+Each app had its own components, and the buyer site showed its age. Before the migration I counted what we were dealing with:
+
+- 2,992 uses of legacy colour classes and 865 hardcoded colour values
+- a local Button imported by 208 files
+- 18 separate Radix packages
+- two validation libraries, with 47 files still on Yup
+
+Nothing was broken. But every new screen meant choosing between several ways of doing the same thing, and the admin app had started to drift from the buyer site.
+
+## What I built
+
+`@giddaa-housing/ui` is a public npm package with its own [documentation site](https://ui-doc.giddaa.com).
+
+- **About 110 components.** They run from buttons and form fields to pieces specific to our product: property listing cards, price tags, a currency selector, a photo gallery, a kanban board, a data table, a rich text editor and around 15 chart types.
+- **Built on Base UI.** The primitives handle focus, keyboard behaviour and ARIA. Variants are defined with CVA and styled with Tailwind CSS 4.
+- **Tokens in layers.** There is a neutral base (spacing, radii, type scale, elevation) and an optional Giddaa theme with the brand colour ramps and semantic tokens such as `fg-brand` and `fg-danger`. Every token is redeclared for dark mode.
+- **One import path per component.** Apps import `@giddaa-housing/ui/button`, not a single large entry point, so they only bundle what they use.
+
+The agent app is React Native, so it cannot use the components. It mirrors the tokens, and a script in its CI checks that the values match the package and that text colours meet WCAG AA contrast in both themes.
+
+## Keeping it trustworthy
+
+A shared library is only useful if teams can upgrade without fear. Most of the rules are enforced by CI.
+
+- **Docs are required.** A test fails if any component is missing a docs page with Usage, Examples, Props and Accessibility sections. There are 128 pages today.
+- **The package is tested as a consumer would use it.** Before a release, the built tarball is installed into an empty project and every import path is loaded and type-checked.
+- **Boundaries are tested.** Published code cannot import app aliases or router APIs.
+- **Releases are automated.** Changesets opens a release PR with the changelog, and merging it publishes to npm.
+
+There have been 22 releases, from 0.1.0 in June 2026 to 4.1.0 in October. APIs were marked deprecated through the 3.x releases and removed in 4.0, which also replaced the charting library.
+
+## Migrating the buyer site
+
+The buyer site had about 1,100 TypeScript files, so a single big rewrite was not an option. I split the work into 13 phases. Each phase has a script that checks its own exit condition, such as "no file imports the local Button", and a phase is not finished until the script passes.
+
+Where that got us:
+
+- the local component folder is gone, and 733 files now import from the package
+- all 18 Radix packages have been removed
+- Yup is gone: 44 forms were converted to Zod
+- 52 `useEffect` calls were removed across 47 components while those components were being touched anyway
+- the largest component went from 999 lines to pieces of 368 lines or fewer
+
+The admin app moved over in the same period and now imports the package in 845 files.
+
+## Trade-offs
+
+- **No Storybook.** That was a deliberate choice. The docs site carries the examples and CI makes sure they exist, so there is one place to keep current, not two.
+- **Four major versions in under four months.** Moving fast was right while only two apps depended on the package, and each breaking change was signposted with a deprecation first. With more consumers I would slow that down.
+- **Not every phase is closed.** One migration phase is still open. The gate scripts mean I know exactly what is left.

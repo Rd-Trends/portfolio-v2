@@ -1,6 +1,6 @@
 {
-  "name": "Danie Ikoyo",
-  "short_name": "RD",
+  "name": "Daniel Ikoyo",
+  "short_name": "Daniel Ikoyo",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ff6969",
-  "background_color": "#141e46",
+  "theme_color": "#0f0f10",
+  "background_color": "#0f0f10",
   "display": "standalone"
 }

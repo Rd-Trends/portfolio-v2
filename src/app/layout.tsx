@@ -1,33 +1,36 @@
 import "./globals.css";
-import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
-import ThemeProvider from "./provider";
-import Nav from "@/components/Nav";
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
-import { minify } from "terser";
+import Nav from "@/components/Nav";
+import { site } from "@/lib/site";
 
-const nunito = Nunito({ subsets: ["latin"] });
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dev-rd.vercel.app"),
-  title: "Daniel Ikoyo",
-  description:
-    "Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.",
+  metadataBase: new URL(site.url),
+  title: {
+    default: `${site.name} — ${site.role}`,
+    template: `%s — ${site.name}`,
+  },
+  description: site.description,
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_NG",
     url: "/",
-    images: "/og",
-    title: "Daniel Ikoyo - Full Stack Developer",
-    description: `Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.`,
+    siteName: site.name,
+    title: `${site.name} — ${site.role}`,
+    description: site.description,
   },
   twitter: {
-    title: "Daniel Ikoyo",
     card: "summary_large_image",
-    site: "@Rd_Trendz",
-    creator: "@Rd_Trendz",
-    images: "/og",
-    description: `Daniel Ikoyo is Full Stack Developer who thrives on delivering high-quality and scalable solutions that meet the needs of his clients.`,
+    site: site.twitterHandle,
+    creator: site.twitterHandle,
   },
   manifest: "/manifest.json",
   icons: {
@@ -35,51 +38,49 @@ export const metadata: Metadata = {
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
-    apple: "/apple-icon.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 
-export default async function RootLayout({
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f0f10" },
+  ],
+};
+
+// Runs before first paint so the saved (or system) theme never flashes.
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");var d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})()`;
+
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const script = await minify(code);
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={nunito.className}>
-        <ThemeProvider code={script.code!}>
-          <div className="flex min-h-screen flex-col justify-between py-4 px-4 md:px-12 lg:px-[8rem] max-w-7xl mx-auto">
-            <Nav />
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="font-sans">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded-md focus:bg-fg focus:px-3 focus:py-2 focus:text-sm focus:text-bg"
+        >
+          Skip to content
+        </a>
+        <div className="mx-auto flex min-h-screen max-w-2xl flex-col px-5 sm:px-6">
+          <Nav />
+          <main id="main" className="flex-1">
             {children}
-            <Footer />
-          </div>
-        </ThemeProvider>
+          </main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
 }
-
-const code = `!(function () {
-  var currentTheme = "system";
-  var userSystemPrefersDarkMode = false;
-  if (localStorage.getItem("theme")) {
-    currentTheme = localStorage.getItem("theme");
-  }
-  if (
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  ) {
-    userSystemPrefersDarkMode = true;
-  }
-  if (
-    currentTheme === "dark" ||
-    (currentTheme === "system" && userSystemPrefersDarkMode)
-  ) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
-  localStorage.setItem("theme", currentTheme);
-})()
-`;

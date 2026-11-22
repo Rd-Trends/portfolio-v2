@@ -1,7 +1,9 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
-  "files": { "includes": ["**", "!content"] },
+  "files": {
+    "includes": ["**", "!content", "!.agents/skills", "!.claude/skills"]
+  },
   "formatter": { "indentStyle": "space", "indentWidth": 2 },
   "css": { "parser": { "tailwindDirectives": true } },
   "linter": {

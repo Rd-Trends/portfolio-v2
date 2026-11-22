@@ -1,0 +1,64 @@
+---
+title: Turning WhatsApp messages into products at drip.ng
+description: From 10–15 minutes per product to roughly 2–3 minutes for a batch of up to nine, using a WhatsApp agent.
+slug: turning-whatsapp-messages-into-products
+company: drip.ng
+role: Sole developer, frontend and backend
+timeframe: Apr – Nov 2026
+stack: ["Next.js 16", "Payload CMS", "PostgreSQL", "Vercel AI SDK", "WhatsApp Cloud API", "Zod"]
+order: 1
+---
+
+[drip.ng](https://drip.ng) is a men's streetwear store for Nigeria. I built the storefront and its management tools for a client whose suppliers send him product photos and details on WhatsApp.
+
+Getting those products onto the website took roughly **10–15 minutes per product**. He would send the images to Grok for a title and description, then open the store admin and create the listing. Each new product meant repeating the process.
+
+I built a WhatsApp agent that takes the supplier messages he forwards and creates the products for him. The new process takes roughly **2–3 minutes for a batch**, which can include three or even nine products, with less back and forth between tools. These are estimates from his everyday workflow, rather than a timed benchmark.
+
+![The drip.ng product catalogue showing clothing photos, titles, prices and colour options](/images/work/drip-products.webp)
+
+## The challenge
+
+My client was already using AI to help write product copy. He still had to move that copy into the admin, upload photos, enter prices and set up the available sizes and colours.
+
+An earlier tool I built let him add size and colour combinations together. That removed some repetition, but the steps between receiving a supplier's message and publishing a product remained separate.
+
+When several products arrived, he had to work through that sequence for each one.
+
+## The goal
+
+Let him create listings from the supplier messages he already receives on WhatsApp, including several products in one go.
+
+## How the new process works
+
+My client forwards the supplier's photos and product details to the WhatsApp agent. He can send several products before typing **done** to start processing.
+
+The agent turns those messages into listings: writing titles and descriptions, organising photos, identifying sizes and colours, and reading cost prices. Selling prices follow the store's markup rules.
+
+He receives progress updates, then a summary of each product with a link to edit it. Valid listings are published automatically. If a listing fails checks, such as having no usable photo, it stays as a draft.
+
+![A drip.ng product page with its title, price, three colour options, sizes and description](/images/work/drip-product-details.webp)
+
+*The finished product page brings the photos, description, price and available options together.*
+
+## Making it reliable enough to use
+
+The early versions sometimes mixed up photos or created separate colour options for "Black" and "black". I tightened how the agent matches photos to products and made it reuse existing colour options.
+
+I also made interrupted jobs resume where they stopped. Retrying should not create the same product twice, and a problem with one listing should not prevent the others from being created.
+
+When something fails, the agent sends an explanation on WhatsApp. My client can see what needs attention rather than wondering whether the products were created.
+
+These checks mattered before moving from draft-only listings to automatic publishing. I tested interrupted runs, duplicate prevention and partial failures, and kept the summary and edit link as the review step.
+
+## What changed
+
+The old workflow took roughly 10–15 minutes for one product and involved WhatsApp, Grok and the store admin. The new workflow takes roughly **2–3 minutes for a batch of up to nine products**: forward the messages, send **done**, then check the summaries.
+
+He can also submit multiple products together instead of restarting the same process for each listing. The change reduces the copying and switching between tools that made adding stock repetitive.
+
+## What I learned
+
+Seeing how my client already used Grok helped define the work. Generating descriptions was already possible; connecting that step to photos, pricing and publishing was where I could remove more of the manual effort.
+
+WhatsApp gave him a familiar place to do that. Most of my work went into handling the messy details behind it, so he could forward what a supplier sent and review the result.

@@ -17,7 +17,7 @@ export const projects: Project[] = [
     url: "https://giddaa.com",
     image: "/images/projects/giddaa-houses.webp",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "TanStack Query"],
-    caseStudy: "giddaa-seo",
+    caseStudy: "helping-homebuyers-find-giddaa-on-google",
     featured: true,
   },
   {
@@ -27,17 +27,16 @@ export const projects: Project[] = [
     url: "https://drip.ng",
     image: "/images/projects/drip-home.webp",
     stack: ["Next.js", "Payload CMS", "PostgreSQL"],
-    caseStudy: "drip-product-automation",
+    caseStudy: "turning-whatsapp-messages-into-products",
     featured: true,
   },
   {
     title: "Giddaa UI system",
     description:
-      "The design system behind Giddaa's web apps: about 110 components on npm, with a documentation site.",
+      "A shared component library for Giddaa’s web apps, replacing separate copies that had drifted in appearance and behaviour.",
     url: "https://ui-doc.giddaa.com",
     image: "/images/projects/giddaa-ui.webp",
     stack: ["React", "Base UI", "Tailwind CSS", "Changesets"],
-    caseStudy: "giddaa-design-system",
   },
   {
     title: "ChatFlow",

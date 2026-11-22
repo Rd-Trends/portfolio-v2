@@ -45,6 +45,7 @@ export default function ProjectGrid() {
             <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
               <a
                 href={project.url}
+                aria-label={`Visit ${project.title}`}
                 target="_blank"
                 rel="noreferrer"
                 className={linkClass}

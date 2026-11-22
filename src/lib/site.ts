@@ -3,14 +3,14 @@ export const site = {
   role: "Lead Frontend Developer",
   url: "https://dev-rd.vercel.app",
   description:
-    "Daniel Ikoyo is a frontend developer who builds fast, accessible web products. Lead Frontend Developer at Giddaa, where he works on the design system and SEO.",
+    "Daniel Ikoyo builds web interfaces, AI workflows and automation. Lead Frontend Developer at Giddaa, working on shared component libraries and technical SEO.",
   email: "dannirolands@gmail.com",
   twitterHandle: "@Rd_Trendz",
   /** Set to true to bring back the Writing link and home page section. The /blog pages stay built either way. */
   showWriting: false,
   links: {
     github: "https://github.com/Rd-Trends",
-    linkedin: "https://www.linkedin.com/in/ikoyo-daniel-0334981a6",
+    linkedin: "https://www.linkedin.com/in/daniel-ikoyo-0334981a6",
     twitter: "https://twitter.com/Rd_Trendz",
     upwork: "https://www.upwork.com/freelancers/~015b468d504d985b0f",
   },

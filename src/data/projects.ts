@@ -33,7 +33,7 @@ export const projects: Project[] = [
   {
     title: "Giddaa UI system",
     description:
-      "A shared component library for Giddaa’s web apps, replacing separate copies that had drifted in appearance and behaviour.",
+      "About 110 components published to npm and shared by Giddaa’s buyer site and admin app, with documentation, tests and automated releases.",
     url: "https://ui-doc.giddaa.com",
     image: "/images/projects/giddaa-ui.webp",
     stack: ["React", "Base UI", "Tailwind CSS", "Changesets"],

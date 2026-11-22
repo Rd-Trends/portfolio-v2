@@ -1,0 +1,64 @@
+---
+title: Bringing Giddaa's web apps together
+description: Creating a shared set of interface elements so Giddaa's buyer site and admin app could grow with a consistent look and feel.
+slug: giddaa-design-system
+company: Giddaa
+role: Lead Frontend Developer
+timeframe: Jun – Oct 2026
+stack: ["React 19", "TypeScript", "Tailwind CSS 4", "Base UI", "CVA", "tsdown", "Changesets"]
+order: 2
+---
+
+[Giddaa](https://giddaa.com) helps Nigerians buy homes through mortgages and payment plans. Its buyer website and internal admin app had grown separately, with each team building its own buttons, forms and other interface elements.
+
+As Lead Frontend Developer, I designed and built a shared library for both web apps. The aim was to give the team a consistent starting point for new screens and a practical way to improve existing ones.
+
+![The documentation site for the Giddaa UI system](/images/work/giddaa-ui-docs.webp)
+
+## The challenge
+
+We were copying components from one codebase to another and maintaining each copy separately. Over time, they fell out of sync: the same component could have differently named settings, behave differently or look different across apps.
+
+The buyer site alone had thousands of colour choices written directly into individual screens. Its old button appeared in 208 files. Bringing everything together would mean changing a large, active product carefully.
+
+## The goal
+
+Give the web team one set of reusable building blocks, with clear examples of how to use them. Buttons, forms and property cards should feel like parts of the same product, wherever they appear.
+
+The transition also needed to happen in manageable stages so the team could keep working on the apps.
+
+## My approach
+
+I built a library of about **110 components**, covering everyday elements such as buttons and form fields, as well as property cards, price displays, photo galleries and charts.
+
+I defined shared colours, spacing and text styles for light and dark themes. Keyboard navigation and focus behaviour were part of the foundations, so developers had those basics in place when building a screen.
+
+Giddaa's mobile agent app uses different technology and cannot share the web components. It follows the same visual styles, with automated checks for matching values and readable text contrast.
+
+## Helping the team use it
+
+A library needs to be understandable as well as reusable. I created a [documentation site](https://ui-doc.giddaa.com) with examples, settings and accessibility guidance for each component. It now has **128 pages**.
+
+Before each release, automated checks confirm that the components can be installed and used by an app. Documentation is checked too, so new components cannot be released without a guide.
+
+The library went through 22 releases between June and October 2026. When a change would require teams to update their code, I signposted it in earlier releases before removing the old option.
+
+## Moving the existing apps over
+
+The buyer site contained about 1,100 code files. I divided the transition into **13 phases**, each with a clear completion check. For example, replacing the old button was complete only when no screen still used it.
+
+Working in stages also gave me room to simplify some of the larger screens and bring forms onto one shared approach.
+
+## What changed
+
+Both web apps now use the shared library. The buyer site uses it across **733 files**, and the admin app across **845 files**.
+
+The buyer site's old component folder has been removed, and 44 forms have moved to the same validation approach. The team now has one place to find the components and guidance used by both apps.
+
+One migration phase is still open. The checks for each phase make the remaining work visible.
+
+## What I learned
+
+The transition needed as much attention as the library itself. Clear examples, release notes and small migration steps gave the team a way to adopt the work gradually.
+
+I kept examples and guidance in one documentation site to make them easier to maintain. I also moved quickly through major releases while only two apps depended on the library. If more teams adopt it, I would give them longer to prepare for changes.

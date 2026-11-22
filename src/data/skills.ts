@@ -35,6 +35,15 @@ export const skills = [
     ],
   },
   {
+    area: "AI and automation",
+    items: [
+      "Vercel AI SDK",
+      "WhatsApp Cloud API",
+      "Workflow automation",
+      "Structured output validation",
+    ],
+  },
+  {
     area: "Backend",
     items: ["Node.js", "PostgreSQL", "Payload CMS", "AdonisJS", "MongoDB"],
   },

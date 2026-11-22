@@ -38,7 +38,7 @@ export default function Home() {
         }}
       />
 
-      <div className="pt-10 sm:pt-16">
+      <div className="pt-10 sm:pt-16 print:pt-0">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Daniel Ikoyo
         </h1>
@@ -55,15 +55,18 @@ export default function Home() {
         </p>
         <div className="mt-6 space-y-4 text-pretty leading-relaxed">
           <p>
-            I build web interfaces that are fast, accessible and easy for a team
-            to keep building on. Most of my work is in React, Next.js and
-            TypeScript: design systems, pages that have to rank, and the tooling
-            around them.
+            I build web interfaces with React, Next.js and TypeScript. I also
+            build shared component libraries and AI tools that automate manual
+            tasks.
           </p>
           <p>
-            At Giddaa I lead the frontend. I helped put a proper design system
-            in place and ran the SEO work that took us to the first page of
-            Google for property-for-sale searches in Nigeria. I also build{" "}
+            At Giddaa, I built the component library used by the buyer site and
+            admin app. I also led technical SEO as part of the team’s work that
+            helped Giddaa reach the first page of Google for property-for-sale
+            searches in Nigeria.
+          </p>
+          <p>
+            I also build{" "}
             <a
               href="https://drip.ng"
               target="_blank"
@@ -72,9 +75,10 @@ export default function Home() {
             >
               drip.ng
             </a>
-            , a streetwear store, end to end.
+            , a streetwear store for a client. Its AI agent turns forwarded
+            WhatsApp messages into product listings.
           </p>
-          <p>
+          <p className="print:hidden">
             I take on freelance projects too. You can{" "}
             <a
               href={site.links.upwork}
@@ -121,8 +125,12 @@ export default function Home() {
         </ul>
       </div>
 
-      <Section title="Case studies" href="/work">
+      <Section title="Case studies" href="/work" className="print:hidden">
         <CaseStudyList studies={studies} />
+      </Section>
+
+      <Section title="Projects" className="print:hidden">
+        <ProjectGrid />
       </Section>
 
       <Section title="Experience">
@@ -130,7 +138,7 @@ export default function Home() {
           {experience.map((job) => (
             <li
               key={`${job.company}-${job.title}`}
-              className="grid gap-x-6 gap-y-1 sm:grid-cols-[9rem_1fr]"
+              className="grid gap-x-6 gap-y-1 sm:grid-cols-[9rem_1fr] print:break-inside-avoid"
             >
               <p className="pt-0.5 font-mono text-xs text-muted">
                 {job.period}
@@ -167,12 +175,12 @@ export default function Home() {
         </ol>
       </Section>
 
-      <Section title="Skills">
+      <Section title="Skills" className="print:break-inside-avoid">
         <dl className="space-y-3">
           {skills.map((group) => (
             <div
               key={group.area}
-              className="grid gap-x-6 gap-y-1 sm:grid-cols-[9rem_1fr]"
+              className="grid gap-x-6 gap-y-1 sm:grid-cols-[9rem_1fr] print:break-inside-avoid"
             >
               <dt className="pt-0.5 font-mono text-xs text-muted">
                 {group.area}
@@ -189,8 +197,17 @@ export default function Home() {
         </Section>
       )}
 
-      <Section title="Projects" className="print:hidden">
-        <ProjectGrid />
+      <Section title="Selected work" className="hidden print:block">
+        <ul className="space-y-3">
+          {studies.map((study) => (
+            <li key={study.slug} className="break-inside-avoid">
+              <h3 className="font-medium">
+                <a href={`${site.url}/work/${study.slug}`}>{study.title}</a>
+              </h3>
+              <p className="text-muted">{study.description}</p>
+            </li>
+          ))}
+        </ul>
       </Section>
     </>
   );
